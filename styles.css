@@ -1,0 +1,137 @@
+:root {
+    --game-font: 'Gochi Hand', cursive;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: whitesmoke;
+    font-family: var(--game-font);
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 1.4rem;
+}
+.title h1 {
+    font-size: 2rem;
+}
+
+.game-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    margin: .4rem;
+}
+.game-stats > * {
+    margin-left: 5px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.star-rating {}
+
+.fas.fa-star {
+    color: darkgrey;
+    vertical-align: middle;
+}
+.fas.fa-star.checked {
+    color: orange;
+}
+.moves {}
+.timer {}
+.play-btn {
+    padding: 0 .8rem;
+    font-family: var(--game-font);
+    font-size: 1.2rem;
+    background-color: transparent;
+    box-shadow: 4px 5px 13px 0 rgba(46, 61, 73, 0.5);
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+}
+.play-btn:hover {
+    background-color: red;
+    color: #fff;
+}
+
+.play-btn > i {
+    display: none;
+}
+
+.game-grid {
+    background-color: #716F71;
+    box-shadow: 8px 9px 26px 0 rgba(46, 61, 73, 0.5);
+    border-radius: 4px;
+    width: 600px;
+    height: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    padding: 20px;
+    perspective: 1000px;
+}
+
+.card {
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    width: calc(25% - 10px);
+    height: calc(33.33% - 10px);
+    margin: 5px;
+    position: relative;
+    transform: scale(1);
+    transform-style: preserve-3d;
+    transition: transform .2s;
+}
+
+.card:active {
+    transform: scale(.97);
+}
+
+.card.flip {
+    transform: rotateY(180deg);
+}
+
+.front-face,
+.back-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: #141214;
+    backface-visibility: hidden;
+}
+.front-face {
+    transform: rotateY(180deg);
+}
+.back-face {
+    height: 100%;
+    padding: 10px;
+}
+
+/*
+.game-board {
+    width: 640px;
+    height: 640px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+.memory-card {
+    position: relative;
+    width: calc(25% - 10px);
+    height: calc(33.33% -10px);
+    margin: 5px;
+    transform: scale(1);
+    transition: transform .2s;
+}
+
+
+*/
