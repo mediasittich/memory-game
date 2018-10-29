@@ -2,6 +2,10 @@ const movesCounter = document.getElementById('moves');
 const playBtn = document.getElementById('playBtn');
 const timerMinutes = document.getElementById('minutes');
 const timerSeconds = document.getElementById('seconds');
+const stars = document.querySelectorAll('.fa-star');
+const starsChecked = document.querySelectorAll('.checked');
+
+const modalContainer = document.getElementById('modal');
 
 let cardWasFlipped = false;
 let cardOne, cardTwo;
@@ -13,6 +17,8 @@ let moves = 0;
 let minutes = 0, seconds = 0;
 let interval;
 
+let starCount = 0;
+
 const captainsArray = [
     'kirk',
     'picard',
@@ -21,6 +27,48 @@ const captainsArray = [
     'archer',
     'georgiou',
 ];
+
+playBtn.addEventListener('click', startGame);
+
+function startGame() {
+    playBtn.childNodes[1].style.display = 'none';
+    playBtn.childNodes[3].style.display = 'inline';
+    startTimer();
+}
+const finalMoves = document.getElementById('modalMoves');
+const finalMins = document.getElementById('modalMins');
+const finalSecs = document.getElementById('modalSecs');
+const finalRating = document.getElementById('modalRating');
+const modalBtn = document.getElementById('modalBtn');
+const closeModalBtn = document.getElementById('closeModal');
+
+closeModalBtn.addEventListener('click', closeModal);
+function closeModal() {
+    modalContainer.style.display = 'none';
+}
+function gameOver() {
+    let flippedCardsNum = document.querySelectorAll('.flip').length;
+    if (flippedCardsNum === cardsArray.length) {
+        finalMoves.textContent = moves;
+        finalMins.textContent = minutes;
+        finalSecs.textContent = seconds;
+        modalContainer.style.display = 'block';
+
+        stars.forEach(function(star) {
+            if(star.classList.contains('checked')) {
+                starCount++;
+            }
+        });
+
+        for (let i = 0; i < starCount; i++) {
+            let star = document.createElement('i');
+            star.setAttribute('class', 'fas fa-star checked');
+            finalRating.appendChild(star);
+        }
+
+        clearInterval(interval);
+    }
+}
 // Duplicate captainsArray to have two of each card
 let cardsArray = captainsArray.concat(captainsArray);
 // Use shuffle to re-order cards in Array
@@ -91,12 +139,25 @@ function flipCard() {
 
         // Star rating of player performance - update after each move:
         // cases: moves <=8, <= 12, > 12
+        if (moves > 8 && moves <= 12) {
+            // 2 stars
+            if (starsChecked.length === 3) {
+                stars[starsChecked.length - 1].classList.remove('checked');
+            }
+        } else if (moves > 12) {
+            // 1 star
+            if (starsChecked.length === 2) {
+                stars[starsChecked.length - 1].classList.remove('checked');
+            }
+        } 
 
         // check if clicked cards match
         // isMatch()
         if (cardOne.dataset.captain === cardTwo.dataset.captain) { // if clicked cards match, remove event listener
             cardOne.removeEventListener('click', flipCard);
             cardTwo.removeEventListener('click', flipCard);
+
+            gameOver();
         } else { // else unflip cards with delay
             boardLocked = true;
             setTimeout(() => {
@@ -108,17 +169,21 @@ function flipCard() {
                 boardLocked = false;
                 cardOne = null;
                 cardTwo = null;
-            }, 1500)
+            }, 1200)
         }
     }
 }
 
 // Game Timer
-playBtn.addEventListener('click', startTimer);
-
 function startTimer() {
-    console.log('Time is running...')
     interval = setInterval(function() {
+        timerMinutes.textContent = minutes;
+        timerSeconds.textContent = seconds;
 
+        seconds++;
+        if (seconds == 60) {
+            minutes++;
+            seconds = 0;
+        }
     }, 1000);
 }
